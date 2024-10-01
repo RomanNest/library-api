@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "book",
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -124,6 +125,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "user.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.openapi.AutoSchema",
