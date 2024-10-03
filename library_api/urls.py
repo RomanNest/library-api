@@ -39,4 +39,5 @@ urlpatterns = [
         name="redoc",
     ),
     path("api/v1/users/", include("user.urls"), name="user"),
+    path("api/v1/borrowings/", include("borrowing.urls"), name="borrowing"),
 ]
