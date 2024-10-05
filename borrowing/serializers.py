@@ -44,7 +44,6 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
             "expected_return",
             "actual_return",
             "book",
-            "user",
         )
 
     def validate(self, data):
