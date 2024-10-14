@@ -1,4 +1,5 @@
-FROM python:3.13.0-alpine3.20
+FROM python:3.11.10-bullseye
+
 LABEL maintainer="rom.puh@gmail.com"
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -6,14 +7,16 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN pip install --upgrate pip
+#RUN #apt update && apt install postgresql-dev
+
+RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 
 COPY . .
 
-RUN mkdir -p/vol/web/media
+RUN mkdir -p /vol/web/media
 
 RUN adduser \
     --disabled-password \
