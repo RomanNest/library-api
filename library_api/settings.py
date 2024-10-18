@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "book",
     "user",
     "borrowing",
+    "payment",
     "django_celery_beat",
 ]
 
@@ -173,3 +174,6 @@ CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_TIMEZONE = "Europe/Kyiv"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
