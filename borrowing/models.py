@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -6,7 +8,7 @@ from library_api import settings
 
 
 class Borrowing(models.Model):
-    borrow_date = models.DateField(auto_now_add=True)
+    borrow_date = models.DateField(default=date.today)
     expected_return = models.DateField()
     actual_return = models.DateField(null=True, blank=True)
     book = models.ForeignKey(
@@ -28,7 +30,7 @@ class Borrowing(models.Model):
         return self.actual_return is None
 
     def clean(self):
-        if self.expected_return <= self.borrow_date:
+        if self.expected_return.day <= self.borrow_date.day:
             raise ValidationError(
                 f"Expected return date must be after {self.borrow_date}"
             )
