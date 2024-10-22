@@ -38,7 +38,7 @@ class PaymentListSerializer(PaymentSerializer):
 
 
 class PaymentDetailSerializer(PaymentSerializer):
-    borrowing = serializers.CharField(source="borrowing", read_only=True)
+    borrowing = serializers.CharField(source="borrowing.book.title", read_only=True)
     user = serializers.CharField(
         source="borrowing.user.email",
         read_only=True,
