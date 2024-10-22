@@ -62,6 +62,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "library_api.urls"
 
+BASE_URL = "http://localhost:8000"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
