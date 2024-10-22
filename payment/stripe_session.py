@@ -1,7 +1,6 @@
 import stripe
 from django.conf import settings
-from rest_framework.request import Request
-from stripe.checkout import Session
+from rest_framework.reverse import reverse
 
 from payment.models import Payment
 from borrowing.models import Borrowing
@@ -45,9 +44,6 @@ def create_stripe_session(borrowing: Borrowing) -> Payment:
         total_amount = calculate_days_fee_amount(borrowing)
         name = f"Payment for borrowing of {book.title} is {total_amount}"
 
-    success_url = settings.stripe_success_url
-    cancel_url = settings.stripe_cancel_url
-
     session = stripe.checkout.Session.create(
         line_items=[
             {
@@ -62,14 +58,12 @@ def create_stripe_session(borrowing: Borrowing) -> Payment:
             }
         ],
         mode="payment",
-        success_url=success_url,
-        cancel_url=cancel_url,
+        success_url=(settings.BASE_URL
+                     + reverse("payment:payment-success")
+                     + "?session_id={CHECKOUT_SESSION_ID}"),
+        cancel_url=settings.BASE_URL + reverse("payment:payment-cancel")
+
     )
-    # return session
-
-
-# def create_stripe_payment_session(borrowing: Borrowing) -> Payment | None:
-#     stripe_session = create_stripe_session(borrowing)
 
     payment = Payment.objects.create(
         status=Payment.StatusChoices.PENDING,
@@ -77,7 +71,7 @@ def create_stripe_session(borrowing: Borrowing) -> Payment:
         session_id=session.id,
         session_url=session.url,
         money_to_pay=session.amount_total / 100,
-        type=session.type,
+        type=Payment.TypeChoices.PAYMENT,
 
     )
 
