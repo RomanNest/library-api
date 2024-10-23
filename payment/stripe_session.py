@@ -45,6 +45,7 @@ def create_stripe_session(borrowing: Borrowing) -> Payment:
         name = f"Payment for borrowing of {book.title} is {total_amount}"
 
     session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
         line_items=[
             {
                 "price_data": {
