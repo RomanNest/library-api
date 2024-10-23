@@ -5,6 +5,7 @@ from payment.views import (
     PaymentViewSet,
     PaymentSuccessView,
     PaymentCancelView,
+    PaymentRenewView,
 )
 
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("success/", PaymentSuccessView.as_view(), name="payment-success"),
     path("cancel/", PaymentCancelView.as_view(), name="payment-cancel"),
+    path("renew/", PaymentRenewView.as_view(), name="payment-renew"),
 ]
 
 app_name = "payment"
