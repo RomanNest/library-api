@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payment.models import Payment
+from payment.stripe_session import create_stripe_session
 from payment.serializers import (
     PaymentSerializer,
     PaymentListSerializer,
@@ -67,4 +68,28 @@ class PaymentCancelView(APIView):
                           "Please, complete your payment within 24 hours"
             },
             status=status.HTTP_200_OK
+        )
+
+
+class PaymentRenewView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(
+        summary="Get info about renewal payment",
+        description="Authenticated user can get info about renewal payment"
+    )
+    def get(self, request, *args, **kwargs):
+        payment = Payment.objects.filter(
+            status=Payment.StatusChoices.EXPIRED,
+            borrowing__user=self.request.user,
+        ).first()
+        if payment:
+            create_stripe_session(payment.borrowing)
+            return Response(
+                {"status": "This payment has renewed successfully"},
+                status=status.HTTP_200_OK,
+            )
+        return Response(
+            {"status": "This payment has not yet been renewed"},
+            status=status.HTTP_204_NO_CONTENT,
         )
