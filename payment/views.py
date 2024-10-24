@@ -4,6 +4,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from borrowing.send_telegram_message import send_telegram_message
 from payment.models import Payment
 from payment.stripe_session import create_stripe_session
 from payment.serializers import (
@@ -51,6 +52,10 @@ class PaymentSuccessView(APIView):
             )
             serializer.is_valid(raise_exception=True)
             serializer.save()
+
+            message = (f"Your borrowing book: "
+                       f"{payment.borrowing.book.title} is paid")
+            send_telegram_message(message)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
