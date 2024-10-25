@@ -22,5 +22,5 @@ def check_session_for_expiration():
         if session.expires_at and session.expires_at < int(time.time()):
             payment.status = Payment.StatusChoices.EXPIRED
             payment.save()
-            message = f"Session expired at {session.expires_at}"
+            message = f"Session {payment.session_id} is expired."
             send_telegram_message(message)
