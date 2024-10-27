@@ -40,4 +40,5 @@ urlpatterns = [
     ),
     path("api/v1/users/", include("user.urls"), name="user"),
     path("api/v1/borrowings/", include("borrowing.urls"), name="borrowing"),
+    path("api/v1/payments/", include("payment.urls"), name="payment"),
 ]
