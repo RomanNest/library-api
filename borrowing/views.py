@@ -2,7 +2,7 @@ from datetime import datetime
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -17,6 +17,7 @@ from borrowing.serializers import (
 class BorrowingViewSet(viewsets.ModelViewSet):
     queryset = Borrowing.objects.select_related("user", "book")
 
+    permission_classes = [permissions.IsAuthenticated]
     def get_serializer_class(self):
         if self.action == "create":
             return BorrowingCreateSerializer
